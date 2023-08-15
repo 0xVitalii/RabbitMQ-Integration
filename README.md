@@ -32,6 +32,18 @@ RabbitMQ может быть использован для управления 
 
 ### Отправка и Получение сообщения
 
+Потребуется установленные Node.js и amqplib 
+
+```
+npm install amqplib -g
+```
+
+Устанавливаем Docker и запускаем RabbitMQ на стандартном порте
+
+```
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+```
+
 ```
 node src/send.js
 node src/receive.js
