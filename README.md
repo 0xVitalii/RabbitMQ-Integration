@@ -1,4 +1,4 @@
-# RabbitMQ для обработки платежей
+# Интеграция RabbitMQ в процессинг платежей
 
 ## Общая информация
 
@@ -28,82 +28,15 @@ RabbitMQ может быть использован для управления 
 4. **Гибкость**: Можно легко интегрировать с различными платформами и языками программирования.
 
 
-## Пример кода на JavaScript
+## Пример кода на NodeJS
 
-### Отправка сообщения
+### Отправка и Получение сообщения
 
-```javascript
-const amqp = require('amqplib/callback_api');
-
-amqp.connect('amqp://localhost', function(error, connection) {
-    if (error) {
-        throw error;
-    }
-    connection.createChannel(function(error, channel) {
-        if (error) {
-            throw error;
-        }
-        const queue = 'transaction_queue';
-        const msg = 'Transaction Details';
-
-        channel.assertQueue(queue, {
-            durable: false
-        });
-        channel.sendToQueue(queue, Buffer.from(msg));
-
-        console.log("Sent 'Transaction Details'");
-    });
-    setTimeout(function() {
-        connection.close();
-    }, 500);
-});
+```
+node src/send.js
+node src/receive.js
 ```
 
-### Получение сообщения
-
-```javascript
-const amqp = require('amqplib/callback_api');
-
-amqp.connect('amqp://localhost', function(error, connection) {
-    if (error) {
-        throw error;
-    }
-    connection.createChannel(function(error, channel) {
-        if (error) {
-            throw error;
-        }
-        const queue = 'transaction_queue';
-
-        channel.assertQueue(queue, {
-            durable: false
-        });
-
-        console.log('Waiting for messages. To exit press CTRL+C');
-        
-        channel.consume(queue, function(msg) {
-            console.log(`Received ${msg.content.toString()}`);
-        }, {
-            noAck: true
-        });
-    });
-});
-```
-
-## Пример кода на Python
-
-```python
-import pika
-
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-channel = connection.channel()
-
-channel.queue_declare(queue='transaction_queue')
-
-channel.basic_publish(exchange='', routing_key='transaction_queue', body='Transaction Details')
-print("Sent 'Transaction Details'")
-
-connection.close()
-```
 
 ## Полезные ресурсы
 
