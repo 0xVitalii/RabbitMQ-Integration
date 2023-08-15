@@ -1,4 +1,6 @@
-# Введение в RabbitMQ для Обработки Платежей
+
+
+```markdown
 
 ## Общая информация о RabbitMQ
 
@@ -17,7 +19,6 @@ RabbitMQ может быть использован для управления 
 
 ## Пример кода на Python
 
-### Отправка сообщения
 ```python
 import pika
 
@@ -30,3 +31,73 @@ channel.basic_publish(exchange='', routing_key='transaction_queue', body='Transa
 print("Sent 'Transaction Details'")
 
 connection.close()
+```
+
+## Пример кода на JavaScript
+
+### Отправка сообщения
+
+```javascript
+const amqp = require('amqplib/callback_api');
+
+amqp.connect('amqp://localhost', function(error, connection) {
+    if (error) {
+        throw error;
+    }
+    connection.createChannel(function(error, channel) {
+        if (error) {
+            throw error;
+        }
+        const queue = 'transaction_queue';
+        const msg = 'Transaction Details';
+
+        channel.assertQueue(queue, {
+            durable: false
+        });
+        channel.sendToQueue(queue, Buffer.from(msg));
+
+        console.log("Sent 'Transaction Details'");
+    });
+    setTimeout(function() {
+        connection.close();
+    }, 500);
+});
+```
+
+### Получение сообщения
+
+```javascript
+const amqp = require('amqplib/callback_api');
+
+amqp.connect('amqp://localhost', function(error, connection) {
+    if (error) {
+        throw error;
+    }
+    connection.createChannel(function(error, channel) {
+        if (error) {
+            throw error;
+        }
+        const queue = 'transaction_queue';
+
+        channel.assertQueue(queue, {
+            durable: false
+        });
+
+        console.log('Waiting for messages. To exit press CTRL+C');
+        
+        channel.consume(queue, function(msg) {
+            console.log(`Received ${msg.content.toString()}`);
+        }, {
+            noAck: true
+        });
+    });
+});
+```
+
+## Полезные ресурсы
+
+1. **[Официальная документация RabbitMQ](https://www.rabbitmq.com/)**: Лучший источник для глубокого понимания работы RabbitMQ.
+2. **[Библиотека `amqplib` для Node.js](https://www.npmjs.com/package/amqplib)**: Основной инструмент для работы с RabbitMQ на JavaScript.
+3. **[Туториалы RabbitMQ](https://www.rabbitmq.com/getstarted.html)**: Набор туториалов для разных языков программирования.
+4. **[Форум сообщества RabbitMQ](https://groups.google.com/forum/#!forum/rabbitmq-users)**: Место, где можно задать вопросы и получить помощь от сообщества.
+```
