@@ -1,5 +1,4 @@
 
-
 ```markdown
 
 ## Общая информация о RabbitMQ
