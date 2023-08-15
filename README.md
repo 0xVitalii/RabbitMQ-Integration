@@ -1,5 +1,9 @@
+Конечно, вам нужна разметка в формате Markdown для README файла на GitHub. Вот как это будет выглядеть:
+
+---
 
 ```markdown
+# Введение в RabbitMQ для Обработки Платежей
 
 ## Общая информация о RabbitMQ
 
@@ -100,3 +104,7 @@ amqp.connect('amqp://localhost', function(error, connection) {
 3. **[Туториалы RabbitMQ](https://www.rabbitmq.com/getstarted.html)**: Набор туториалов для разных языков программирования.
 4. **[Форум сообщества RabbitMQ](https://groups.google.com/forum/#!forum/rabbitmq-users)**: Место, где можно задать вопросы и получить помощь от сообщества.
 ```
+
+---
+
+Просто скопируйте этот код и вставьте в ваш README файл на GitHub.
